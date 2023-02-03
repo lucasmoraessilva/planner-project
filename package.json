@@ -1,0 +1,9 @@
+{
+  "name": "planner-project",
+  "version": "1.0.0",
+  "description": "Planner for organizing the week's tasks",
+  "main": "index.js",
+  "scripts": {},
+  "author": "Lucas Moraes da Silva",
+  "license": "ISC"
+}
