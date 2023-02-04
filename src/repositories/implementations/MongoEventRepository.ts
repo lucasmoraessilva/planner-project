@@ -1,10 +1,10 @@
-import mongoose from "mongoose";
 import { Event } from "../../entities/Event";
-import { eventSchema } from "../../schemas/eventSchema";
+import { eventModel } from "../../models/eventModel";
 import { IEventRepository } from "../IEventRepository";
 
-
 export class MongoEventRepository implements IEventRepository {
+
+    constructor() {}
 
     getAll(userId: string): Promise<Event[]> {
         throw new Error("Method not implemented.");
@@ -17,7 +17,6 @@ export class MongoEventRepository implements IEventRepository {
     }
 
     async create(event: Event): Promise<void> {
-        const eventModel = mongoose.model('Event', eventSchema);
         const newEvent = new eventModel({
             _id: event._id,
             description: event.description,
