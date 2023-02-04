@@ -1,23 +1,13 @@
-import mongoose, { Types } from "mongoose";
 import { User } from "../../entities/User";
-import { userSchema } from "../../schemas/userSchema";
+import { userModel } from "../../models/userModel";
 import { IUserRepository } from "../IUserRepository";
 
 export class MongoUserRepository implements IUserRepository {
 
-    constructor() {
-        mongoose.connect(
-            process.env.MONGO_DEV_URL!
-                .replace(
-                    '<USERNAME>:<PASSWORD>',
-                    `${process.env.MONGO_DEV_USERNAME}:${process.env.MONGO_DEV_PASSWORD}`
-                )
-        );
-    }
+    constructor() {}
 
     async signUp(user: User): Promise<void> {
-        const userModel = mongoose.model('User', userSchema);
-        const userDoc = new userModel({
+        const newUser = new userModel({
             _id: user._id,
             firstName: user.firstName,
             lastName: user.lastName,
@@ -28,7 +18,7 @@ export class MongoUserRepository implements IUserRepository {
             password: user.password,
             confirmPassword: user.confirmPassword
         });
-        await userDoc.save();
+        await newUser.save();
     }
     async signIn(email: string, password: string): Promise<boolean> {
         throw new Error("Method not implemented.");
