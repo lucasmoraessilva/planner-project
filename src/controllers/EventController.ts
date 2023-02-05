@@ -40,4 +40,12 @@ export class EventController{
 
         response.status(200).send(event);
     }
+
+    async delete(request: Request, response: Response, next: NextFunction) {
+        const { _id } = request.params;
+
+        await EventController.eventRepository.delete(_id);
+
+        response.status(200).send();
+    }
 }
