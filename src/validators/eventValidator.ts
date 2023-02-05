@@ -18,7 +18,7 @@ export const eventValidator = {
         return error ? error.message : null;
     },
 
-    userId(description: string): string | null {
+    userId(userId: string): string | null {
         const schema = Joi
             .string()
             .required()
@@ -32,7 +32,7 @@ export const eventValidator = {
                 'string.length': "'description' must be 24 characters",
             });
 
-        const { error } = schema.validate(description);
+        const { error } = schema.validate(userId);
 
         return error ? error.message : null;
     },
