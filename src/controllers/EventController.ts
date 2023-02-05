@@ -34,4 +34,10 @@ export class EventController{
 
         response.status(200).send(events);
     }
+
+    async getById(request: Request, response: Response, next: NextFunction){
+        const event = await EventController.eventRepository.getById(request.params._id);
+
+        response.status(200).send(event);
+    }
 }
