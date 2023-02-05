@@ -34,3 +34,14 @@ export async function userIdValidationMiddleware(request: Request, response: Res
     
     next();
 }
+
+export async function eventIdValidationMiddleware(request: Request, response: Response, next: NextFunction) {
+    const { _id } = request.params;
+
+    const error = await eventValidator._id(_id);
+
+    if(error)
+        return response.status(400).json({error});
+
+    next();
+}
