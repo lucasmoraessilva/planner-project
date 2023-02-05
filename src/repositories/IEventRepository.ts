@@ -5,4 +5,5 @@ export interface IEventRepository {
     getByWeekday(weekday: string): Promise<Event>;
     getById(eventId: string): Promise<Event>;
     create(event: Event): Promise<void>;
+    delete(eventId: string): Promise<void>;
 }
