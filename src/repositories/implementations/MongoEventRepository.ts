@@ -39,4 +39,8 @@ export class MongoEventRepository implements IEventRepository {
         });
         await newEvent.save();
     }
+
+    async delete(eventId: string): Promise<void> {
+        await eventModel.deleteOne({ _id: eventId });
+    }
 }
