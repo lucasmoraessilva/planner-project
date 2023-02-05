@@ -25,3 +25,12 @@ function validateEventProperties(validator: any, objectToBeValidated: any){
 
     return errors;
 }
+
+export async function userIdValidationMiddleware(request: Request, response: Response, next: NextFunction){
+    const error = await eventValidator.userId(request.params.userId);
+
+    if(error)
+        return response.status(400).json({error});
+    
+    next();
+}
