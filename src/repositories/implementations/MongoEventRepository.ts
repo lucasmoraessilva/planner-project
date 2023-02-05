@@ -6,9 +6,20 @@ export class MongoEventRepository implements IEventRepository {
 
     constructor() {}
 
-    getAll(userId: string): Promise<Event[]> {
-        throw new Error("Method not implemented.");
+    async getAll(userId: string): Promise<Event[]> {
+        const events = await eventModel.find({ userId });
+        
+        return events.map(
+            event => new Event(
+                event._id.toString(),
+                event.description,
+                event.userId.toString(),
+                event.dateTime,
+                event.createdAt
+            )
+        );
     }
+
     getByWeekday(weekday: string): Promise<Event> {
         throw new Error("Method not implemented.");
     }
