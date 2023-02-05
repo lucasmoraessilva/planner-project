@@ -28,4 +28,10 @@ export class EventController{
 
         response.status(201).send();
     }
+
+    async getAll(request: Request, response: Response, next: NextFunction){
+        const events = await EventController.eventRepository.getAll(request.params.userId);
+
+        response.status(200).send(events);
+    }
 }
