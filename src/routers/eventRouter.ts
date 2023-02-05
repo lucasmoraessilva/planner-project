@@ -9,5 +9,6 @@ const eventController = new EventController(new MongoEventRepository());
 eventRouter.post('/', eventValidationMiddleware, eventController.create);
 eventRouter.get('/:userId', userIdValidationMiddleware, eventController.getAll);
 eventRouter.get('/:_id', eventIdValidationMiddleware, eventController.getById);
+eventRouter.delete('/:_id', eventIdValidationMiddleware, eventController.delete);
 
 export default eventRouter;
