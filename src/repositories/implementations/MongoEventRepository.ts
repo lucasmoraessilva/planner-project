@@ -25,8 +25,14 @@ export class MongoEventRepository implements IEventRepository {
     }
     
     async getById(eventId: string): Promise<Event> {
-        const a = await eventModel.findOne({ _id: eventId });
-        return new Event(a!._id.toString(), a!.description, a!.userId.toString(), a!.dateTime, a!.createdAt);
+        const event = await eventModel.findOne({ _id: eventId });
+        return new Event(
+            event!._id.toString(),
+            event!.description,
+            event!.userId.toString(),
+            event!.dateTime,
+            event!.createdAt
+        );
     }
 
     async create(event: Event): Promise<void> {
