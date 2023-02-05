@@ -1,6 +1,23 @@
 import Joi from "joi";
 
 export const eventValidator = {
+    _id(_id: string): string | null {
+        const schema = Joi
+            .string()
+            .hex()
+            .length(24)
+            .messages({
+                'string.base': "'_id' is not a text type",
+                'string.empty': "'_id' cannot be empty",
+                'string.hex': "'_id' must be a hexadecimal value",
+                'string.length': "'_id' must be 24 characters"
+            });
+
+        const { error } = schema.validate(_id);
+
+        return error ? error.message : null;
+    },
+
     description(description: string): string | null {
         const schema = Joi
             .string()
@@ -25,11 +42,11 @@ export const eventValidator = {
             .hex()
             .length(24)
             .messages({
-                'string.base': "'description' is not a text type",
-                'string.empty': "'description' cannot be empty",
-                'any.required': "'description' is required",
-                'string.hex': "'description' must be a hexadecimal value",
-                'string.length': "'description' must be 24 characters",
+                'string.base': "'userId' is not a text type",
+                'string.empty': "'userId' cannot be empty",
+                'any.required': "'userId' is required",
+                'string.hex': "'userId' must be a hexadecimal value",
+                'string.length': "'userId' must be 24 characters"
             });
 
         const { error } = schema.validate(userId);
