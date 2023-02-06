@@ -10,5 +10,6 @@ eventRouter.post('/', eventValidationMiddleware, eventController.create);
 eventRouter.get('/', eventController.getAll);
 eventRouter.get('/:_id', eventIdValidationMiddleware, eventController.getById);
 eventRouter.delete('/:_id', eventIdValidationMiddleware, eventController.delete);
+eventRouter.delete('/', eventController.deleteByWeekday);
 
 export default eventRouter;
