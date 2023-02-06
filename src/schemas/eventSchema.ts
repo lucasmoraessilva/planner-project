@@ -21,5 +21,14 @@ export const eventSchema = new Schema({
     createdAt: {
         type: Date,
         default: Date.now()
-    },
+    }
+},
+{
+    virtuals: {
+        dayOfTheWeek: {
+            get() {
+                return String(this.dateTime.getDay());
+            }
+        }
+    }
 });
