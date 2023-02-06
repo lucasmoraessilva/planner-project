@@ -50,4 +50,16 @@ export class EventController{
 
         response.status(200).send();
     }
+
+    async deleteByWeekday(request: Request, response: Response, next: NextFunction) {
+        const { dayOfTheWeek } = request.query;
+
+        if(!dayOfTheWeek) {
+            return response.status(400).send({error: "The 'dayOfTheWeek' parameter must be informed"});
+        }
+
+        await EventController.eventRepository.deleteByWeekday(dayOfTheWeek as string);
+    
+        response.status(200).send();
+    }
 }
