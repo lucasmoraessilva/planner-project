@@ -7,10 +7,12 @@ export class MongoEventRepository implements IEventRepository {
     constructor() {}
 
     async getAll(dayOfTheWeek?: string): Promise<Event[]> {
-        let events = await eventModel.find();
+        let query = eventModel.find();
 
         if(dayOfTheWeek)
-            events = events.filter(event => event.dayOfTheWeek === dayOfTheWeek);
+            query.where('dayOfTheWeek').equals(dayOfTheWeek);
+
+        const events = await query;
         
         return events.map(
             event => new Event(
@@ -47,5 +49,9 @@ export class MongoEventRepository implements IEventRepository {
 
     async delete(eventId: string): Promise<void> {
         await eventModel.deleteOne({ _id: eventId });
+    }
+
+    async deleteByWeekday(dayOfTheWeek: string): Promise<void> {
+        await eventModel.deleteMany({ dayOfTheWeek });
     }
 }
