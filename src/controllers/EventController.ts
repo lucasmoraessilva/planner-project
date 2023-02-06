@@ -10,7 +10,7 @@ export class EventController{
         EventController.eventRepository = eventRepository;
     }
 
-    async create(request: Request, response: Response, next: NextFunction){
+    async create(request: Request, response: Response, next: NextFunction) {
         const {
             description,
             userId,
@@ -29,7 +29,7 @@ export class EventController{
         response.status(201).send();
     }
 
-    async getAll(request: Request, response: Response, next: NextFunction){
+    async getAll(request: Request, response: Response, next: NextFunction) {
         const { dayOfTheWeek } = request.query;
 
         let events = await EventController.eventRepository.getAll(dayOfTheWeek as string);
@@ -37,7 +37,7 @@ export class EventController{
         response.status(200).send(events);
     }
 
-    async getById(request: Request, response: Response, next: NextFunction){
+    async getById(request: Request, response: Response, next: NextFunction) {
         const event = await EventController.eventRepository.getById(request.params._id);
 
         response.status(200).send(event);
@@ -60,6 +60,15 @@ export class EventController{
 
         await EventController.eventRepository.deleteByWeekday(dayOfTheWeek as string);
     
+        response.status(200).send();
+    }
+
+    async update(request: Request, response: Response, next: NextFunction) {
+        const { _id } = request.params;
+        const { description, dateTime } = request.body;
+
+        await EventController.eventRepository.update(new Event(_id,description,'',dateTime,new Date()));
+
         response.status(200).send();
     }
 }
