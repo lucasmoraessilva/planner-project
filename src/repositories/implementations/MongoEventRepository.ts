@@ -6,8 +6,11 @@ export class MongoEventRepository implements IEventRepository {
 
     constructor() {}
 
-    async getAll(userId: string): Promise<Event[]> {
-        const events = await eventModel.find({ userId });
+    async getAll(dayOfTheWeek?: string): Promise<Event[]> {
+        let events = await eventModel.find();
+
+        if(dayOfTheWeek)
+            events = events.filter(event => event.dayOfTheWeek === dayOfTheWeek);
         
         return events.map(
             event => new Event(
@@ -18,10 +21,6 @@ export class MongoEventRepository implements IEventRepository {
                 event.createdAt
             )
         );
-    }
-
-    getByWeekday(weekday: string): Promise<Event> {
-        throw new Error("Method not implemented.");
     }
     
     async getById(eventId: string): Promise<Event> {
