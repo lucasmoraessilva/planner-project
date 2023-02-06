@@ -2,6 +2,7 @@ import { IUserRepository } from "../repositories/IUserRepository";
 import { Request, Response, NextFunction } from "express";
 import { User } from "../entities/User";
 import { Types } from "mongoose";
+import crypto from "crypto"
 
 export class UserController{
     private static userRepository: IUserRepository;
@@ -30,8 +31,8 @@ export class UserController{
             city,
             country,
             email,
-            password,
-            confirmPassword
+            crypto.createHash('sha256').update(password).digest('hex'),
+            crypto.createHash('sha256').update(confirmPassword).digest('hex')
         ));
 
         response.status(201).send();
