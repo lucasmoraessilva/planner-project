@@ -11,5 +11,6 @@ eventRouter.get('/', eventController.getAll);
 eventRouter.get('/:_id', eventIdValidationMiddleware, eventController.getById);
 eventRouter.delete('/:_id', eventIdValidationMiddleware, eventController.delete);
 eventRouter.delete('/', eventController.deleteByWeekday);
+eventRouter.put('/:_id', eventIdValidationMiddleware, eventController.update);
 
 export default eventRouter;
