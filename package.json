@@ -4,7 +4,9 @@
   "description": "Planner for organizing the week's tasks",
   "main": "src/server.ts",
   "scripts": {
-    "start:dev": "nodemon --watch ./src -e ts --exec 'ts-node-dev src/server.ts'"
+    "start:dev": "nodemon --watch ./src -e ts --exec 'ts-node-dev src/server.ts'",
+    "build": "tsc",
+    "start:prod": "node dist/server.js"
   },
   "author": "Lucas Moraes da Silva",
   "license": "ISC",
