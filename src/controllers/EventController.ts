@@ -30,7 +30,9 @@ export class EventController{
     }
 
     async getAll(request: Request, response: Response, next: NextFunction){
-        const events = await EventController.eventRepository.getAll(request.params.userId);
+        const { dayOfTheWeek } = request.query;
+
+        let events = await EventController.eventRepository.getAll(dayOfTheWeek as string);
 
         response.status(200).send(events);
     }
