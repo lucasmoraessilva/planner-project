@@ -24,7 +24,6 @@ export const eventSchema = new Schema({
     },
     dayOfTheWeek: {
         type: String,
-        immutable: true,
         default: function () {
             // @ts-ignore
             return String(this.dateTime.getDay());
