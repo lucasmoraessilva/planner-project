@@ -54,4 +54,12 @@ export class MongoEventRepository implements IEventRepository {
     async deleteByWeekday(dayOfTheWeek: string): Promise<void> {
         await eventModel.deleteMany({ dayOfTheWeek });
     }
+
+    async update(event: Event): Promise<void> {
+        await eventModel.updateOne({ _id: event._id }, {
+            description: event.description,
+            dateTime: event.dateTime,
+            dayOfTheWeek: new Date(event.dateTime).getDay().toString()
+        });
+    }
 }
