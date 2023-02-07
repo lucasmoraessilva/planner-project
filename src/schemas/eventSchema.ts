@@ -4,10 +4,12 @@ export const eventSchema = new Schema({
     _id: {
         type: Types.ObjectId,
         required: true,
+        unique: true
     },
     description: {
         type: String,
         required: true,
+        minLength: 1
     },
     userId: {
         type: Types.ObjectId,
@@ -16,7 +18,8 @@ export const eventSchema = new Schema({
     },
     dateTime: {
         type: Date,
-        required: true
+        required: true,
+        min: Date.now()
     },
     createdAt: {
         type: Date,
@@ -27,6 +30,7 @@ export const eventSchema = new Schema({
         default: function () {
             // @ts-ignore
             return String(this.dateTime.getDay());
-        }
+        },
+        select: false
     }
 });
