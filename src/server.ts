@@ -16,10 +16,12 @@ mongoose.connect(
 
 import userRouter from "./routers/userRouter"
 import eventRouter from "./routers/eventRouter"
+import { defaultErrorHandler } from "./middlewares/errorHandlingMiddleware";
 const app = express()
 
 app.use(express.json());
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/events', eventRouter);
+app.use(defaultErrorHandler);
 
 app.listen(process.env.API_PORT!, () => console.log('planner-api started'));
