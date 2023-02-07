@@ -62,4 +62,33 @@ export class UserController{
             )
             .send()
     }
+
+    async updateAllFields(request: Request, response: Response, next: NextFunction) {
+        const {
+            firstName,
+            lastName,
+            birthDate,
+            city,
+            country,
+            email,
+            password,
+            confirmPassword
+        } = request.body;
+
+        const { _id } = request.params;
+
+        await UserController.userRepository.updateAllFields(new User(
+            _id,
+            firstName,
+            lastName,
+            new Date(birthDate),
+            city,
+            country,
+            email,
+            password,
+            confirmPassword
+        ));
+
+        response.status(200).send();
+    }
 }
