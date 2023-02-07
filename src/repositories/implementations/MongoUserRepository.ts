@@ -2,12 +2,19 @@ import { User } from "../../entities/User";
 import { userModel } from "../../models/userModel";
 import { IUserRepository } from "../IUserRepository";
 import crypto from "crypto"
+import { RepositoryError } from "../../errors/RepositoryError";
 
 export class MongoUserRepository implements IUserRepository {
 
     constructor() {}
 
     async signUp(user: User): Promise<void> {
+        const userId = await userModel.exists({ email: user.email });
+
+        if(userId) {
+            return Promise.reject(new RepositoryError('E-mail já está cadastrado no sistema'));
+        }
+
         const newUser = new userModel({
             _id: user._id,
             firstName: user.firstName,
@@ -19,6 +26,7 @@ export class MongoUserRepository implements IUserRepository {
             password: user.password,
             confirmPassword: user.confirmPassword
         });
+        
         await newUser.save();
     }
 
@@ -27,6 +35,10 @@ export class MongoUserRepository implements IUserRepository {
             email: email,
             password: crypto.createHash('sha256').update(password).digest('hex')
         });
+
+        if(!userId){
+            return Promise.reject(new RepositoryError('E-mail ou senha incorreto'))
+        }
 
         const user = await userModel.findOne({ _id: userId });
 
@@ -44,6 +56,12 @@ export class MongoUserRepository implements IUserRepository {
     }
 
     async updateAllFields(user: User): Promise<void> {
+        const userId = await userModel.exists({ _id: user._id });
+
+        if(!userId) {
+            return Promise.reject(new RepositoryError('_id informado não foi encontrado'));
+        }
+
         await userModel.updateOne({ _id: user._id },
             {
                 firstName: user.firstName,
