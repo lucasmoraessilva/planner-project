@@ -44,6 +44,16 @@ export class MongoUserRepository implements IUserRepository {
     }
 
     async updateAllFields(user: User): Promise<void> {
-        throw new Error("Method not implemented.");
+        await userModel.updateOne({ _id: user._id },
+            {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                birthDate: user.birthDate,
+                city: user.city,
+                country: user.country,
+                email: user.email,
+                password: crypto.createHash('sha256').update(user.password).digest('hex'),
+                confirmPassword: crypto.createHash('sha256').update(user.confirmPassword).digest('hex')
+            });
     }
 }
