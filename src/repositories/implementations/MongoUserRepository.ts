@@ -1,6 +1,7 @@
 import { User } from "../../entities/User";
 import { userModel } from "../../models/userModel";
 import { IUserRepository } from "../IUserRepository";
+import crypto from "crypto"
 
 export class MongoUserRepository implements IUserRepository {
 
@@ -20,9 +21,28 @@ export class MongoUserRepository implements IUserRepository {
         });
         await newUser.save();
     }
-    async signIn(email: string, password: string): Promise<boolean> {
-        throw new Error("Method not implemented.");
+
+    async signIn(email: string, password: string): Promise<User> {
+        const userId = await userModel.exists({
+            email: email,
+            password: crypto.createHash('sha256').update(password).digest('hex')
+        });
+
+        const user = await userModel.findOne({ _id: userId });
+
+        return new User(
+            user!._id.toString(),
+            user!.firstName,
+            user!.lastName,
+            user!.birthDate,
+            user!.city,
+            user!.country,
+            user!.email,
+            '',
+            ''
+        );
     }
+
     async updateAllFields(user: User): Promise<void> {
         throw new Error("Method not implemented.");
     }
