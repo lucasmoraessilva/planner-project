@@ -12,7 +12,7 @@ export class MongoUserRepository implements IUserRepository {
         const userId = await userModel.exists({ email: user.email });
 
         if(userId) {
-            return Promise.reject(new RepositoryError('E-mail já está cadastrado no sistema'));
+            return Promise.reject(new RepositoryError('The email entered is already linked to an account'));
         }
 
         const newUser = new userModel({
@@ -37,7 +37,7 @@ export class MongoUserRepository implements IUserRepository {
         });
 
         if(!userId){
-            return Promise.reject(new RepositoryError('E-mail ou senha incorreto'))
+            return Promise.reject(new RepositoryError('Incorrect email or password'))
         }
 
         const user = await userModel.findOne({ _id: userId });
@@ -59,7 +59,7 @@ export class MongoUserRepository implements IUserRepository {
         const userId = await userModel.exists({ _id: user._id });
 
         if(!userId) {
-            return Promise.reject(new RepositoryError('_id informado não foi encontrado'));
+            return Promise.reject(new RepositoryError('The specified _id was not found'));
         }
 
         await userModel.updateOne({ _id: user._id },
