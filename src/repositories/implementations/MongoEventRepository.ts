@@ -87,7 +87,7 @@ export class MongoEventRepository implements IEventRepository {
         await eventModel.updateOne({ _id: event._id }, {
             description: event.description,
             dateTime: event.dateTime,
-            dayOfTheWeek: new Date(event.dateTime).getDay().toString()
+            dayOfTheWeek: event.dateTime.getDay().toString()
         });
     }
 }
