@@ -28,3 +28,18 @@ function validateUserProperties(validator: any, objectToBeValidated: any){
 
     return errors;
 }
+
+export function signInValidationMiddleware(request: Request, response: Response, next: NextFunction) {
+    const validationErrors = [
+        userValidator.email(request.body.email),
+        userValidator.password(request.body.password)
+    ].filter(error => error !== null);
+
+    if(validationErrors.length){
+        return response.status(400).json({
+            errors: validationErrors
+        });
+    }
+
+    next();
+}
