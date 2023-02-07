@@ -2,7 +2,8 @@ import { IUserRepository } from "../repositories/IUserRepository";
 import { Request, Response, NextFunction } from "express";
 import { User } from "../entities/User";
 import { Types } from "mongoose";
-import crypto from "crypto"
+import crypto from "crypto";
+import { sign } from "jsonwebtoken";
 
 export class UserController{
     private static userRepository: IUserRepository;
@@ -11,7 +12,7 @@ export class UserController{
         UserController.userRepository = userRepository;
     }
 
-    async signUp(request: Request, response: Response, next: NextFunction){
+    async signUp(request: Request, response: Response, next: NextFunction) {
         const {
             firstName,
             lastName,
@@ -36,5 +37,29 @@ export class UserController{
         ));
 
         response.status(201).send();
+    }
+
+    async signIn(request: Request, response: Response, next: NextFunction) {
+        const { email, password } = request.body;
+
+        const user = await UserController.userRepository.signIn(email, password);
+
+        const token = await sign(
+            { _id: user._id },
+            process.env.JWT_SECRET!,
+            { expiresIn: '12h' }
+        )
+        
+        response
+            .status(200)
+            .cookie(
+                'jwt',
+                token,
+                {
+                    httpOnly: true,
+                    expires: new Date(Date.now() + 1000 * 60 * 60 * 12)
+                }
+            )
+            .send()
     }
 }
