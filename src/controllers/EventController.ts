@@ -28,7 +28,7 @@ export class EventController{
                 createdAt
             ));
     
-            response.status(201).send();
+            response.status(204).send();
         }
         catch (error: any) {
             next(error);
@@ -71,7 +71,7 @@ export class EventController{
         try {
             await EventController.eventRepository.delete(_id);
     
-            response.status(200).send();
+            response.status(204).send();
         }
         catch (error: any) {
             error instanceof RepositoryError
@@ -90,7 +90,7 @@ export class EventController{
         try {
             await EventController.eventRepository.deleteByWeekday(dayOfTheWeek as string);
         
-            response.status(200).send();
+            response.status(204).send();
         }
         catch (error: any) {
             error instanceof RepositoryError
@@ -112,7 +112,7 @@ export class EventController{
                 new Date())
             );
     
-            response.status(200).send();
+            response.status(204).send();
         }
         catch (error: any) {
             error instanceof RepositoryError

@@ -38,7 +38,7 @@ export class UserController{
                 crypto.createHash('sha256').update(confirmPassword).digest('hex')
             ));
     
-            response.status(201).send();
+            response.status(204).send();
         }
         catch (error: any) {
             error instanceof RepositoryError
@@ -60,7 +60,7 @@ export class UserController{
             )
             
             response
-                .status(200)
+                .status(204)
                 .cookie(
                     'jwt',
                     token,
@@ -105,7 +105,7 @@ export class UserController{
                 confirmPassword
             ));
     
-            response.status(200).send();
+            response.status(204).send();
         }
         catch (error: any) {
             error instanceof RepositoryError
