@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
+import swaggerUI from "swagger-ui-express";
+import swaggerJson from "./swagger.json";
 
 dotenv.config({
     path: `${__dirname}/../.env`
@@ -20,6 +22,7 @@ import { defaultErrorHandler } from "./middlewares/errorHandlingMiddleware";
 const app = express()
 
 app.use(express.json());
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerJson));
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/events', eventRouter);
 app.use(defaultErrorHandler);
