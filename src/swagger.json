@@ -85,7 +85,7 @@
                                     },
                                     "userId": {
                                         "type": "string",
-                                        "example": "f29084bb8c7ab7e1c8d46403"
+                                        "example": "63e37b6438a7f6cc3ef0239a"
                                     },
                                     "dateTime": {
                                         "type": "string",
@@ -496,7 +496,7 @@
                     },
                     "userId": {
                         "type": "string",
-                        "example": "f29084bb8c7ab7e1c8d46403"
+                        "example": "63e37b6438a7f6cc3ef0239a"
                     },
                     "dateTime": {
                         "type": "string",
