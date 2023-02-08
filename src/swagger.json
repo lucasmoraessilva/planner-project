@@ -1,0 +1,575 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Planner API",
+        "description": "Welcome to the Planner API documentation. This API performs operations described in the Planner project requested by Compass.",
+        "contact": {
+            "email": "lucasmoraessilva01@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3000/api/v1",
+            "description": "Local (PC)"
+        },
+        {
+            "url": "https://.../api/v1",
+            "description": "Production"
+        }
+    ],
+    "paths": {
+        "/events": {
+            "get": {
+                "summary": "Get all events",
+                "description": "Get all events from all users.",
+                "parameters": [
+                    {
+                        "name": "dayOfTheWeek",
+                        "in": "query",
+                        "description": "A string value that filters events by day of the week. Must be an integer value between 0 and 6.",
+                        "schema":{
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200":{
+                        "description": "Returns all events for all users.",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type": "array",
+                                    "items":{
+                                        "$ref": "#/components/schemas/Event"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Bad request from user",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "500":{
+                        "description": "Internal error",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new event.",
+                "description": "Creates a user event.",
+                "requestBody": {
+                    "required": true,
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "type": "object",
+                                "properties":{
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Daily"
+                                    },
+                                    "userId": {
+                                        "type": "string",
+                                        "example": "f29084bb8c7ab7e1c8d46403"
+                                    },
+                                    "dateTime": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-08-19T13:00Z"
+                                    },
+                                    "createdAt": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-08-19T13:00Z"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204":{
+                        "description": "Event created successfully."
+                    },
+                    "400":{
+                        "description": "Bad request from user",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/errors"
+                                }
+                            }
+                        }
+                    },
+                    "500":{
+                        "description": "Internal error",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Deletes all events by day of the week.",
+                "description": "Deletes all events that happen on a day of the week.",
+                "parameters": [
+                    {
+                        "name": "dayOfTheWeek",
+                        "in": "query",
+                        "required": true,
+                        "description": "A string value that filters events by day of the week. Must be an integer value between 0 and 6.",
+                        "schema":{
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204":{
+                        "description": "Deletes all events for all users."
+                    },
+                    "400":{
+                        "description": "Bad request from user",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/errors"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500":{
+                        "description": "Internal error",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/events/{_id}": {
+            "get": {
+                "summary": "Get event by _id",
+                "description": "Get an event through its _id.",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path",
+                        "description": "A hexadecimal value that identifies an event.",
+                        "schema":{
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200":{
+                        "description": "Returns the identified event.",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Event"
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Bad request from user",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "500":{
+                        "description": "Internal error",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update an event.",
+                "description": "Updates all fields of an event.",
+                "requestBody": {
+                    "required": true,
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "type": "object",
+                                "properties":{
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Daily"
+                                    },
+                                    "dateTime": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-08-19T13:00Z"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path",
+                        "required": true,
+                        "description": "A hexadecimal value that identifies an event.",
+                        "schema":{
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204":{
+                        "description": "Event updated successfully."
+                    },
+                    "400":{
+                        "description": "Bad request from user",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/errors"
+                                }
+                            }
+                        }
+                    },
+                    "500":{
+                        "description": "Internal error",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete an event.",
+                "description": "Deletes the event associated with the given _id.",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path",
+                        "required": true,
+                        "description": "A hexadecimal value that identifies an event.",
+                        "schema":{
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204":{
+                        "description": "Event deleted successfully."
+                    },
+                    "400":{
+                        "description": "Bad request from user",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/errors"
+                                }
+                            }
+                        }
+                    },
+                    "500":{
+                        "description": "Internal error",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/signUp": {
+            "post": {
+                "summary": "Register a new user.",
+                "description": "Registers a new user in the system, allowing the registration of new events.",
+                "requestBody": {
+                    "required": true,
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204":{
+                        "description": "Register a new user."
+                    },
+                    "400":{
+                        "description": "Bad request from user",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/errors"
+                                }
+                            }
+                        }
+                    },
+                    "500":{
+                        "description": "Internal error",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/signIn": {
+            "post": {
+                "summary": "Authenticate as a user in the system.",
+                "description": "Authenticate as a user registered in the system, allowing access to routes that require authorization.",
+                "requestBody": {
+                    "required": true,
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "type": "object",
+                                "properties":{
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "lucas@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "Senh@F0rt3_12"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204":{
+                        "description": "Performs the login process.",
+                        "headers": {
+                            "Set-Cookie": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "A JWT token that allows you to access routes that require authorization."
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Bad request from user",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/errors"
+                                }
+                            }
+                        }
+                    },
+                    "500":{
+                        "description": "Internal error",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{_id}": {
+            "put": {
+                "summary": "Update an user.",
+                "description": "Updates all fields of an user.",
+                "requestBody": {
+                    "required": true,
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "$ref":"#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path",
+                        "required": true,
+                        "description": "A hexadecimal value that identifies an user.",
+                        "schema":{
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204":{
+                        "description": "User updated successfully."
+                    },
+                    "400":{
+                        "description": "Bad request from user",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/errors"
+                                }
+                            }
+                        }
+                    },
+                    "500":{
+                        "description": "Internal error",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Event":{
+                "type": "object",
+                "properties":{
+                    "_id": {
+                        "type": "string",
+                        "example": "f29084bb8c7ab7e1c8d46403"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Daily"
+                    },
+                    "userId": {
+                        "type": "string",
+                        "example": "f29084bb8c7ab7e1c8d46403"
+                    },
+                    "dateTime": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2023-08-19T13:00Z"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2023-08-19T13:00Z"
+                    }
+                }
+            },
+            "error": {
+                "type": "object",
+                "properties": {
+                    "error": {
+                        "type": "string",
+                        "example": "Error description"
+                    }
+                }
+            },
+            "errors": {
+                "type": "object",
+                "properties": {
+                    "errors": {
+                        "type": "array",
+                        "items":{
+                            "example": "Multiple errors description"
+                        }
+                    }
+                }
+            },
+            "User": {
+                "type": "object",
+                "properties":{
+                    "firstName": {
+                        "type": "string",
+                        "example": "Lucas"
+                    },
+                    "lastName": {
+                        "type": "string",
+                        "example": "Moraes"
+                    },
+                    "birthDate": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2023-08-19T13:00Z"
+                    },
+                    "city": {
+                        "type": "string",
+                        "example": "São Paulo"
+                    },
+                    "country": {
+                        "type": "string",
+                        "example": "Brasil"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "lucas@gmail.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "Senh@F0rt3_12"
+                    },
+                    "confirmPassword": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "Senh@F0rt3_12"
+                    }
+                }
+            }
+        }
+    }
+}
